@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+    <style>
+        #beam {
+            height: 250px;
+            width: 15px;
+            border: 5px solid black;
+            background-color: black;
+        }
+
+        #cross-beam {
+            position: relative;
+            top: -5px;
+            height: 10px;
+            width: 100px;
+            border: 5px solid black;
+            background-color: black;
+        }
+
+        #rope {
+            position: relative;
+            left: 95px;
+            top: -10px;
+            height: 40px;
+            width: 5px;
+            border: 5px solid black;
+            background-color: black;
+        }
+
+        .guess {
+            font-size: 80px;
+            font-weight: bold;
+            text-align: center;
+            margin: 5px;
+            padding: 5px;
+        }
+
+        #head {
+            display: none;
+            position: relative;
+            top: -12px;
+            left: 70px;
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+            border: 5px solid black;
+        }
+
+        #back {
+            display: none;
+            position: relative;
+            left: 100px;
+            top: -13px;
+            height: 80px;
+            width: 3px;
+            border: 3px solid black;
+            background-color: black;
+        }
+
+        #left-arm {
+            display: none;
+            position: relative;
+            left: 83px;
+            top: -95px;
+            transform: rotate(-45deg);
+            height: 50px;
+            width: 3px;
+            border: 1px solid black;
+            background-color: black;
+        }
+
+        #right-arm {
+            display: none;
+            position: relative;
+            left: 70px;
+            top: -95px;
+            transform: translate(50px, -50px) rotate(45deg);
+            height: 50px;
+            width: 3px;
+            border: 1px solid black;
+            background-color: black;
+        }
+
+        #left-leg {
+            display: none;
+            position: relative;
+            left: 80px;
+            top: -130px;
+            transform: rotate(45deg);
+            height: 55px;
+            width: 3px;
+            border: 1px solid black;
+            background-color: black;
+        }
+
+        #right-leg {
+            display: none;
+            position: relative;
+            left: 75px;
+            top: -136px;
+            transform: translate(50px, -50px) rotate(-45deg);
+            height: 55px;
+            width: 3px;
+            border: 1px solid black;
+            background-color: black;
+        }
+
+        ul {
+            padding: 0;
+            margin: 0;
+        }
+
+        ul li {
+            list-style: none;
+            padding: 10px;
+            width: 8%;
+            float: left;
+            background-color: rgb(95, 95, 99);
+            color: white;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 5px;
+            box-shadow: 0 5px 0 #a5a5a5, 0 2px 5px rgba(0, 0, 0, 0.75);
+            text-align: center;
+        }
+
+        ul li:active {
+            position: relative;
+            top: 5px;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <nav>
+        <h1>Games</h1>
+    </nav>
+
+    <main>
+        <!--Could do a random number guessing game.
+            Could do a guess who game, with preset people and hints and it randomly selects the name
+        -->
+
+        <!--Hangman game-->
+
+        <div>
+            <h1>Hangman</h1>
+            <p>Try and guess the word before you hang the man.</p>
+        </div>
+        <div>
+            <div id="beam">
+                <!--This will be for creating the person, will need to make sure some of this is hidden and activated by js -->
+                <div id="cross-beam">
+                </div>
+                <div id="rope">
+                </div>
+                <div id="head"></div><!--head-->
+                <div id="back">
+                </div><!--body-->
+                <div id="left-arm">
+                </div><!--left arm-->
+                <div id="right-arm">
+                </div><!--right arm-->
+                <div id="left-leg">
+                </div><!--left leg-->
+                <div id="right-leg">
+                </div><!--right leg-->
+            </div>
+        </div>
+        <div class="guess"></div><!--This needs to be for each blank line for the word to display-->
+
+        <div>
+            <label for="guessWord">Type your guess or guess a letter</label>
+            <input type="text">
+        </div>
+        <div>
+            <ul><!--Needs to float and kind of look like a keyboard
+                Will change color when letter is clicked on-->
+                <li>A</li>
+                <li>B</li>
+                <li>C</li>
+                <li>D</li>
+                <li>E</li>
+                <li>F</li>
+                <li>G</li>
+                <li>H</li>
+                <li>I</li>
+                <li>J</li>
+                <li>K</li>
+                <li>L</li>
+                <li>M</li>
+                <li>N</li>
+                <li>O</li>
+                <li>P</li>
+                <li>Q</li>
+                <li>R</li>
+                <li>S</li>
+                <li>T</li>
+                <li>U</li>
+                <li>V</li>
+                <li>W</li>
+                <li>X</li>
+                <li>Y</li>
+                <li>Z</li>
+            </ul>
+        </div>
+    </main>
+
+
+    <script>
+        let words = ["HANGMAN", "GRAPE", "LOVE", "COMPUTER", "ITEM", "PHONE", "EGG", "LAVA", "FOOD"];
+        var len = words.length; //length of the array of random words
+        var rand = Math.floor(Math.random() * len); // this picks a random integer between 0 and length of the arary
+        var randWord = words[rand]; // picks the word from the array based off the random number picked
+        let lenRandWord = randWord.length;
+
+
+        var lines = document.querySelector(".guess");
+        var spot = "_ ";
+
+        for (var i = 0; i < lenRandWord; i++) {
+
+            lines.append(spot);
+
+        }
+        lines = lines.innerHTML;
+        position = lines.split(" ")
+        position.pop();
+        var randWordLetters = randWord.split("");
+
+
+        const letters = document.querySelectorAll("ul li");
+        var count = 0;
+
+        letters.forEach((node) => {
+            node.addEventListener('mousedown', function (event) {
+                var choice = node.innerText.trim();
+                node.style.pointerEvents = 'none';
+                node.style.opacity = .3;
+                const head = document.getElementById("head");
+                const back = document.getElementById("back");
+                const leftArm = document.getElementById("left-arm");
+                const rightArm = document.getElementById("right-arm");
+                const leftLeg = document.getElementById("left-leg");
+                const rightLeg = document.getElementById("right-leg");
+
+                for (var i = 0; i < lenRandWord; i++) {
+
+                    if (choice == randWordLetters[i]) {
+                        position[i] = choice;
+                        console.log("correct letter", randWordLetters[i]);
+
+                        console.log(position);
+                        count = count;
+                        var bool = true;
+                    }
+                }
+                lines = document.querySelector(".guess");
+                lines.innerText = position.join(" ");
+
+                if (bool != true) {
+                    count = count + 1;
+                    console.log(count)
+                    bool = false;
+                }
+
+                if (count == 1) {
+                    head.style.display = 'block';
+
+                }
+                else if (count == 2) {
+                    back.style.display = 'block';
+                }
+                else if (count == 3) {
+                    leftArm.style.display = 'block';
+                }
+                else if (count == 4) {
+                    rightArm.style.display = 'block';
+                }
+                else if (count == 5) {
+                    leftLeg.style.display = 'block';
+                }
+                else if (count >= 6) {
+                    rightLeg.style.display = 'block';
+                    alert("You lost")
+                }
+
+            })
+
+        }
+        )
+    </script>
+
+</body>
+
+</html>
